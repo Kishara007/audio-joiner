@@ -1,0 +1,59 @@
+---
+import en from '../i18n/en.json';
+---
+
+<footer class="mt-16 border-t border-[#071B2B]/10 bg-white/75 py-8 text-sm text-[#455B6E] dark:border-[#B9E4E8]/12 dark:bg-[#051320]/80 dark:text-[#A9C2D1]">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6">
+    <div class="text-center sm:text-left">
+      <p class="font-semibold text-[#071B2B] dark:text-[#EEEEEE]" data-i18n="footer.madeBy">
+        {en.footer.madeBy}
+      </p>
+      <p class="mt-0.5 text-xs" data-i18n="footer.privacyNote">
+        {en.footer.privacyNote}
+      </p>
+    </div>
+
+    <nav aria-label="Footer navigation" class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-semibold sm:text-sm">
+      <a
+        href="/how-to-use"
+        data-i18n="footer.howToUse"
+        class="text-[#071B2B]/85 transition hover:text-[#167D8D] dark:text-[#EEEEEE]/85 dark:hover:text-[#B9E4E8]"
+      >
+        {en.footer.howToUse}
+      </a>
+      <a
+        href="/hire-me"
+        data-i18n="footer.hireMe"
+        class="text-[#071B2B]/85 transition hover:text-[#167D8D] dark:text-[#EEEEEE]/85 dark:hover:text-[#B9E4E8]"
+      >
+        {en.footer.hireMe}
+      </a>
+      <button
+        type="button"
+        id="footer-support-trigger"
+        data-i18n="footer.support"
+        class="cursor-pointer text-[#167D8D] transition hover:underline dark:text-[#B9E4E8]"
+      >
+        {en.footer.support}
+      </button>
+      <a
+        href="https://github.com/Kishara007/audio-joiner"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-i18n="footer.github"
+        class="text-[#071B2B]/85 transition hover:text-[#167D8D] dark:text-[#EEEEEE]/85 dark:hover:text-[#B9E4E8]"
+      >
+        {en.footer.github}
+      </a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  const supportBtn = document.getElementById('footer-support-trigger');
+  if (supportBtn) {
+    supportBtn.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('audio-joiner:open-support'));
+    });
+  }
+</script>

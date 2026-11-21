@@ -1,0 +1,123 @@
+---
+import '../styles/global.css';
+import { Navbar } from '../components/Navbar';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  pageMetaKey: 'home' | 'howTo' | 'hire';
+  schemas?: Record<string, unknown>[];
+}
+
+const { title, description, canonicalPath, pageMetaKey, schemas = [] } = Astro.props;
+
+const baseUrl = 'https://audio-joiner.pages.dev';
+const canonicalUrl = canonicalPath === '/' ? `${baseUrl}/` : `${baseUrl}${canonicalPath}`;
+const ogImageUrl = `${baseUrl}/og-image.png`;
+const GTM_ID = 'GTM-M3KZ5B5R';
+const GA4_ID = 'G-FEY0EYHBRR';
+---
+
+<!doctype html>
+<html lang="en" data-page-meta={pageMetaKey}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Kishara Dilshan" />
+    <meta name="theme-color" content="#167D8D" />
+
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Audio Joiner" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Audio Joiner — Free Online Audio Joiner & MP3 Merger" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- FOUT-Free Theme Initialization (Default: Light Mode) -->
+    <script is:inline>
+      (function () {
+        try {
+          var theme = localStorage.getItem('audio-joiner-theme');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script is:inline define:vars={{ GTM_ID }}>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', GTM_ID);
+    </script>
+
+    <!-- Google Analytics 4 (gtag.js) -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+    <script is:inline define:vars={{ GA4_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', GA4_ID);
+    </script>
+
+    {
+      schemas.map((schema) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      ))
+    }
+
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-screen flex-col bg-[#EEEEEE] text-[#071B2B] dark:bg-[#071B2B] dark:text-[#EEEEEE]">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript>
+
+    <Navbar client:load currentPath={Astro.url.pathname} />
+
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
